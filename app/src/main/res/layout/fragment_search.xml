@@ -22,6 +22,7 @@
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="@color/blackL3"
         android:layout_below="@+id/welcome"
         android:text="Search_fragment" />
 
