@@ -10,6 +10,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
@@ -53,6 +55,22 @@ class MainActivity : AppCompatActivity() {
         //  Set action bar
         setSupportActionBar(toolbar)
 
+        val homeFragment = HomeFragment()
+        val searchFragment = SearchFragment()
+        val profileFragment = ProfileFragment()
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        setCurrentFragment(homeFragment)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home->setCurrentFragment(homeFragment)
+                R.id.search->setCurrentFragment(searchFragment)
+                R.id.profile->setCurrentFragment(profileFragment)
+
+            }
+            true
+        }
+
 
 
     }
@@ -61,22 +79,26 @@ class MainActivity : AppCompatActivity() {
         onNavItemSelect(navView.menu.getItem(0))
     }
 
+
     //  On navigation item select
     private fun onNavItemSelect(item: MenuItem) : Boolean{
         invalidateOptionsMenu()
         return when (item.itemId) {
             R.id.ichome -> {
-
+                val homeFragment = HomeFragment()
+                startFragment(homeFragment)
                 drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
             R.id.icpost -> {
-
+                val homeFragment = PostFragment()
+                startFragment(homeFragment)
                 drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
             R.id.icfriends -> {
-
+                val homeFragment = FriendsFragment()
+                startFragment(homeFragment)
                 drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
@@ -103,5 +125,16 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun startFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment, fragment)
+        transaction.commit()
+    }
+
+    private fun setCurrentFragment(fragment:Fragment)=
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment,fragment)
+            commit()
+        }
 
 }
